@@ -4,7 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class CloudsManager : MonoBehaviour
 {
-    [SerializeField] Vector2 cloudsSpeeds;
+    [SerializeField] float maxCloudDistance;
+    [SerializeField] float fastestCloud;
 
     CloudController[] clouds;
     BoxCollider boxCollider;
@@ -18,7 +19,10 @@ public class CloudsManager : MonoBehaviour
     private void Start()
     {
         foreach (CloudController cloud in clouds)
-            cloud.speed = Random.Range(cloudsSpeeds.x, cloudsSpeeds.y);
+        {
+            float cloudSpeedPercent = 1 - Mathf.Clamp(cloud.transform.localPosition.z, 0, maxCloudDistance) / maxCloudDistance;
+            cloud.speed = fastestCloud * cloudSpeedPercent;
+        }
 
         StartCoroutine(UpdateCloudsPositionRoutine());
     }
