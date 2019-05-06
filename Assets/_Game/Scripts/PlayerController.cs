@@ -57,7 +57,8 @@ public class PlayerController : MonoBehaviour
 
             grounded = false;
 
-            StartCoroutine(RotateOnceRoutine(0.25f));
+            StartCoroutine(
+                Bundle.LerpToRotationRoutine(transform, Quaternion.Euler(transform.rotation.eulerAngles + Vector3.up * 90f), 0.3f));
 
             OnJump?.Invoke();
         }
@@ -88,7 +89,10 @@ public class PlayerController : MonoBehaviour
 
                 Ray ray = new Ray(transform.TransformPoint(rayStart), -transform.up);
 
-                Debug.DrawLine(rayStart, rayStart + Vector3.down * rayLength, Color.red);
+                Debug.DrawLine(
+                    transform.TransformPoint(rayStart), 
+                    transform.TransformPoint(rayStart) + Vector3.down * rayLength, 
+                    Color.red);
 
                 if (Physics.Raycast(ray, out hit, rayLength, footRayTargetMask))
                     return true;
@@ -96,24 +100,5 @@ public class PlayerController : MonoBehaviour
         }
 
         return false;
-    }
-
-    IEnumerator RotateOnceRoutine(float rotationTime)
-    {
-        float deltaTime = 0;
-        float frac = 0;
-
-        Quaternion startingRotation = transform.rotation;
-        Quaternion endingRotation = Quaternion.Euler(transform.rotation.eulerAngles + Vector3.up * 90f);
-
-        while (deltaTime <= rotationTime)
-        {
-            deltaTime += Time.deltaTime;
-            frac = Mathf.Clamp01(deltaTime / rotationTime);
-
-            transform.rotation = Quaternion.Lerp(startingRotation, endingRotation, frac);
-
-            yield return null;
-        }
     }
 }

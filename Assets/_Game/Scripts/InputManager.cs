@@ -28,7 +28,7 @@ public class InputManager : MonoBehaviour
             if (powerRoutine != null)
                 StopCoroutine(powerRoutine);
 
-            OnPowerRelease?.Invoke(currentPowerPercent);
+            OnPowerRelease?.Invoke(0.61f);
         }
     }
 

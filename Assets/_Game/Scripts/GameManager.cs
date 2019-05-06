@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,10 +15,13 @@ public class GameManager : MonoBehaviour
 
     public PlayerController player;
     public InputManager inputManager;
+    public CameraPivotController cameraPivotController;
 
     private void Awake()
     {
         Singleton();
+
+        player.OnJump += cameraPivotController.RotateOnce;
 
         inputManager.OnPowerRelease += player.Jump;
     }
