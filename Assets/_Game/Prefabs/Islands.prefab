@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5856780729596483767}
+  - component: {fileID: 1277435910619747967}
   m_Layer: 0
   m_Name: Islands
   m_TagString: Untagged
@@ -34,6 +35,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1277435910619747967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5856780729596483764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd01df5ad2fa6224b94249849ad6133e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2518821957578549593
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45,6 +58,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Island (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 648717324015409693, guid: 7dabaa55a4f885d41bbb3f695ded064d,
+        type: 3}
+      propertyPath: m_TagString
+      value: Island
       objectReference: {fileID: 0}
     - target: {fileID: 648717324015409666, guid: 7dabaa55a4f885d41bbb3f695ded064d,
         type: 3}
@@ -101,15 +119,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 648717324015409666, guid: 7dabaa55a4f885d41bbb3f695ded064d,
+    - target: {fileID: 648717324136532943, guid: 7dabaa55a4f885d41bbb3f695ded064d,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
+      propertyPath: m_LocalPosition.y
+      value: 0.57
       objectReference: {fileID: 0}
-    - target: {fileID: 648717324015409666, guid: 7dabaa55a4f885d41bbb3f695ded064d,
+    - target: {fileID: 648717324136532943, guid: 7dabaa55a4f885d41bbb3f695ded064d,
         type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
+      propertyPath: m_LocalScale.y
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dabaa55a4f885d41bbb3f695ded064d, type: 3}
@@ -129,6 +147,11 @@ PrefabInstance:
     - target: {fileID: 648717324015409693, guid: 7dabaa55a4f885d41bbb3f695ded064d,
         type: 3}
       propertyPath: m_Name
+      value: Island
+      objectReference: {fileID: 0}
+    - target: {fileID: 648717324015409693, guid: 7dabaa55a4f885d41bbb3f695ded064d,
+        type: 3}
+      propertyPath: m_TagString
       value: Island
       objectReference: {fileID: 0}
     - target: {fileID: 648717324015409666, guid: 7dabaa55a4f885d41bbb3f695ded064d,
@@ -186,6 +209,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 648717324136532943, guid: 7dabaa55a4f885d41bbb3f695ded064d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.57
+      objectReference: {fileID: 0}
+    - target: {fileID: 648717324136532943, guid: 7dabaa55a4f885d41bbb3f695ded064d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dabaa55a4f885d41bbb3f695ded064d, type: 3}
 --- !u!4 &5856780731437505037 stripped
@@ -205,6 +238,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Island (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 648717324015409693, guid: 7dabaa55a4f885d41bbb3f695ded064d,
+        type: 3}
+      propertyPath: m_TagString
+      value: Island
       objectReference: {fileID: 0}
     - target: {fileID: 648717324015409666, guid: 7dabaa55a4f885d41bbb3f695ded064d,
         type: 3}
@@ -271,6 +309,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.0000005
       objectReference: {fileID: 0}
+    - target: {fileID: 648717324136532943, guid: 7dabaa55a4f885d41bbb3f695ded064d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.57
+      objectReference: {fileID: 0}
+    - target: {fileID: 648717324136532943, guid: 7dabaa55a4f885d41bbb3f695ded064d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dabaa55a4f885d41bbb3f695ded064d, type: 3}
 --- !u!4 &7624317812881235508 stripped
@@ -290,6 +338,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Island (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 648717324015409693, guid: 7dabaa55a4f885d41bbb3f695ded064d,
+        type: 3}
+      propertyPath: m_TagString
+      value: Island
       objectReference: {fileID: 0}
     - target: {fileID: 648717324015409666, guid: 7dabaa55a4f885d41bbb3f695ded064d,
         type: 3}
@@ -345,6 +398,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 648717324136532943, guid: 7dabaa55a4f885d41bbb3f695ded064d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.57
+      objectReference: {fileID: 0}
+    - target: {fileID: 648717324136532943, guid: 7dabaa55a4f885d41bbb3f695ded064d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dabaa55a4f885d41bbb3f695ded064d, type: 3}

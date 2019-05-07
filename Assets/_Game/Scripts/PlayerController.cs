@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     public event Action OnJump;
     public event Action OnLanding;
+    public event Action OnDeath;
 
     new Rigidbody rigidbody;
     [SerializeField] BoxCollider footCollider;
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] float minLandTime;
     float timeSinceLastJump = 0;
+    bool isDead = false;
 
     private void Awake()
     {
@@ -32,15 +34,16 @@ public class PlayerController : MonoBehaviour
 
     public void Update()
     {
-        Grounded();
-
-        if (!grounded)
-            timeSinceLastJump += Time.deltaTime;
-
-        if (!grounded && Grounded() && timeSinceLastJump >= minLandTime)
+        if(!isDead)
         {
-            grounded = true;
-            OnLanding?.Invoke();
+            if (!grounded)
+                timeSinceLastJump += Time.deltaTime;
+
+            if (!grounded && Grounded() && timeSinceLastJump >= minLandTime)
+            {
+                grounded = true;
+                OnLanding?.Invoke();
+            }
         }
     }
 
@@ -100,5 +103,50 @@ public class PlayerController : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void Die(Vector3 explosionPosition)
+    {
+        isDead = true;
+        UnFreezeRotation();
+        rigidbody.AddExplosionForce(50f, explosionPosition, 50f, 3f, ForceMode.VelocityChange);
+
+        StartCoroutine(Bundle.LerpToLocalScale(transform, Vector3.zero, 1f));
+
+        OnDeath?.Invoke();
+    }
+
+    public void FreezeRotation()
+    {
+        transform.rotation = Quaternion.identity;
+        rigidbody.freezeRotation = true;
+    }
+
+    public void UnFreezeRotation()
+    {
+        rigidbody.freezeRotation = false;
+    }
+
+    public void Reset(Vector3 position)
+    {
+        grounded = true;
+        rigidbody.velocity = Vector3.zero;
+        transform.position = position;
+        FreezeRotation();
+        transform.localScale = Vector3.zero;
+
+        StopAllCoroutines();
+        StartCoroutine(Bundle.LerpToLocalScale(transform, Vector3.one, 0.5f, null, () => { isDead = false; }));
+
+        isDead = false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Island") && !isDead)
+        {
+            Debug.Log("Ouch, islands hurt!");
+            Die(collision.transform.position);
+        }
     }
 }

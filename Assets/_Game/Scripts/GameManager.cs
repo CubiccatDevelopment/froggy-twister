@@ -16,24 +16,28 @@ public class GameManager : MonoBehaviour
     public PlayerController player;
     public InputManager inputManager;
     public CameraPivotController cameraPivotController;
+    public IslandsManager islandsManager;
 
     private void Awake()
     {
         Singleton();
 
+        islandsManager.OnIslandMove += () =>
+        {
+            cameraPivotController.SetHeight(islandsManager.GetAverageHeight());
+        };
+
         player.OnJump += cameraPivotController.RotateOnce;
+        player.OnLanding += islandsManager.SetPreviousIslandRandomPosition;
 
         inputManager.OnPowerRelease += player.Jump;
+        inputManager.OnReset += Reset;
     }
 
-    void Start()
+    public void Reset()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        player.Reset(islandsManager.GetStartingIslandPosition() + Vector3.up * 2);
+        cameraPivotController.Reset();
+        islandsManager.Reset();
     }
 }

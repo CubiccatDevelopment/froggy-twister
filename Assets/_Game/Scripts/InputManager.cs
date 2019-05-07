@@ -6,6 +6,7 @@ public class InputManager : MonoBehaviour
 {
     public event Action OnLoadPower;
     public event Action<float> OnPowerRelease;
+    public event Action OnReset;
 
     [SerializeField] float powerPerSec;
 
@@ -28,8 +29,11 @@ public class InputManager : MonoBehaviour
             if (powerRoutine != null)
                 StopCoroutine(powerRoutine);
 
-            OnPowerRelease?.Invoke(0.61f);
+            OnPowerRelease?.Invoke(currentPowerPercent);
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+            OnReset?.Invoke();
     }
 
     IEnumerator PowerRoutine()

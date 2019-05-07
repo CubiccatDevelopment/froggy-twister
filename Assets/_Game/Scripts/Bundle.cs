@@ -26,7 +26,7 @@ public static class Bundle
 
     public static IEnumerator LerpToPositionRoutine(
         Transform t, Vector3 position, float routineTime,
-        Action onRoutineStart = null, Action onRoutineEnd = null)
+        Action onRoutineStart = null, Action onRoutineEnd = null, Action onEveryFrame = null)
     {
         onRoutineStart?.Invoke();
         Vector3 startingPosition = t.position;
@@ -37,6 +37,7 @@ public static class Bundle
             deltaTime += Time.deltaTime;
             f = deltaTime / routineTime;
             t.position = Vector3.Lerp(startingPosition, position, f);
+            onEveryFrame?.Invoke();
             yield return null;
         }
         onRoutineEnd?.Invoke();
@@ -55,6 +56,24 @@ public static class Bundle
             deltaTime += Time.deltaTime;
             f = deltaTime / routineTime;
             t.localPosition = Vector3.Lerp(startingPosition, localPosition, f);
+            yield return null;
+        }
+        onRoutineEnd?.Invoke();
+    }
+
+    public static IEnumerator LerpToLocalScale(
+    Transform t, Vector3 localScale, float routineTime,
+    Action onRoutineStart = null, Action onRoutineEnd = null)
+    {
+        onRoutineStart?.Invoke();
+        Vector3 startingScale = t.localScale;
+        float deltaTime = 0;
+        float f = 0;
+        while (deltaTime < routineTime)
+        {
+            deltaTime += Time.deltaTime;
+            f = deltaTime / routineTime;
+            t.localScale = Vector3.Lerp(startingScale, localScale, f);
             yield return null;
         }
         onRoutineEnd?.Invoke();
