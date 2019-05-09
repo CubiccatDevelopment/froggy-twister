@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 
     public void Reset()
     {
-        player.Reset(islandsManager.GetStartingIslandPosition() + Vector3.up * 2);
+        player.Reset(islandsManager.GetStartingIsland().GetWaterLily());
         cameraPivotController.Reset();
         islandsManager.Reset();
     }

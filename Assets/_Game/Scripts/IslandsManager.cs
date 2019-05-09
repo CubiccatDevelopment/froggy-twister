@@ -57,9 +57,9 @@ public class IslandsManager : MonoBehaviour
             SetRandomPositions();
     }
 
-    public Vector3 GetStartingIslandPosition()
+    public IslandController GetStartingIsland()
     {
-        return islands[0].transform.position;
+        return islands[0];
     }
 
     public void SetRandomPositions()

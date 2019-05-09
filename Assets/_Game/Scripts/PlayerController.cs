@@ -10,22 +10,22 @@ public class PlayerController : MonoBehaviour
     public event Action OnDeath;
 
     new Rigidbody rigidbody;
-    [SerializeField] BoxCollider footCollider;
 
     bool canJump = true;
     bool grounded = true;
-    float skinLength = 0.005f;
-    [SerializeField] LayerMask footRayTargetMask;
 
     [SerializeField] float maxForwardForce;
     [SerializeField] float maxUpwardForce;
-
     [SerializeField] float minLandTime;
+
     float timeSinceLastJump = 0;
     bool isDead = false;
 
+    GroundDetector groundDetector;
+
     private void Awake()
     {
+        groundDetector = GetComponent<GroundDetector>();
         rigidbody = GetComponent<Rigidbody>();
 
         OnJump += () => { Debug.Log("Jump!"); };
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
             if (!grounded)
                 timeSinceLastJump += Time.deltaTime;
 
-            if (!grounded && Grounded() && timeSinceLastJump >= minLandTime)
+            if (!grounded && groundDetector.Grounded() && timeSinceLastJump >= minLandTime)
             {
                 grounded = true;
                 OnLanding?.Invoke();
@@ -63,46 +63,10 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(
                 Bundle.LerpToRotationRoutine(transform, Quaternion.Euler(transform.rotation.eulerAngles + Vector3.up * 90f), 0.3f));
 
+            transform.SetParent(null);
+
             OnJump?.Invoke();
         }
-    }
-
-    public bool Grounded()
-    {
-        int raysCount = 3;
-
-        float raysStepX = footCollider.size.x / (raysCount - 1);
-        float raysStepZ = footCollider.size.z / (raysCount - 1);
-
-        float rayLength = footCollider.size.y / 2 + skinLength;
-
-        Vector3 raysOrigin = footCollider.center;
-        raysOrigin.x -= footCollider.size.x / 2;
-        raysOrigin.z -= footCollider.size.z / 2;
-
-        Vector3 rayStart;
-        RaycastHit hit;
-
-        for (int x = 0; x < raysCount; x++)
-        {
-            for (int z = 0; z < raysCount; z++) {
-                rayStart.x = raysOrigin.x + x * raysStepX;
-                rayStart.y = raysOrigin.y;
-                rayStart.z = raysOrigin.z + z * raysStepZ;
-
-                Ray ray = new Ray(transform.TransformPoint(rayStart), -transform.up);
-
-                Debug.DrawLine(
-                    transform.TransformPoint(rayStart), 
-                    transform.TransformPoint(rayStart) + Vector3.down * rayLength, 
-                    Color.red);
-
-                if (Physics.Raycast(ray, out hit, rayLength, footRayTargetMask))
-                    return true;
-            }
-        }
-
-        return false;
     }
 
     public void Die(Vector3 explosionPosition)
@@ -127,12 +91,15 @@ public class PlayerController : MonoBehaviour
         rigidbody.freezeRotation = false;
     }
 
-    public void Reset(Vector3 position)
+    public void Reset(Transform parent)
     {
         grounded = true;
-        rigidbody.velocity = Vector3.zero;
-        transform.position = position;
         FreezeRotation();
+        transform.rotation = Quaternion.identity;
+        rigidbody.velocity = Vector3.zero;
+
+        transform.SetParent(parent);
+        transform.localPosition = Vector3.up * 2f;
         transform.localScale = Vector3.zero;
 
         StopAllCoroutines();
@@ -147,6 +114,10 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Ouch, islands hurt!");
             Die(collision.transform.position);
+        } else if(collision.collider.CompareTag("Water Lily"))
+        {
+            Debug.Log("Safe landing!");
+            transform.SetParent(collision.transform);
         }
     }
 }
