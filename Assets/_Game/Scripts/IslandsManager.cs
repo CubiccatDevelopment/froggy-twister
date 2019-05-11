@@ -28,6 +28,17 @@ public class IslandsManager : MonoBehaviour
 
         StartCoroutine(Bundle.LerpToPositionRoutine(
             islands[lastIndex].transform, newPosition, 0.5f, null, null, OnIslandMove));
+
+        RandomDiamondActivation(lastIndex);
+    }
+
+    public void RandomDiamondActivation(int islandIndex)
+    {
+        if (UnityEngine.Random.Range(0f, 1f) > 0.5f)
+        {
+            Debug.Log("Activating diamond.");
+            islands[islandIndex].ActivateDiamond();
+        }
     }
 
     public float GetAverageHeight()
@@ -51,26 +62,9 @@ public class IslandsManager : MonoBehaviour
         return islands.Length - 1;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.W))
-            SetRandomPositions();
-    }
-
     public IslandController GetStartingIsland()
     {
         return islands[0];
-    }
-
-    public void SetRandomPositions()
-    {
-        Vector3 newPosition;
-        for (int i = 0; i < islands.Length; i++)
-        {
-            newPosition = islands[i].transform.position;
-            newPosition.y = UnityEngine.Random.Range(-2f,2f);
-            StartCoroutine(Bundle.LerpToPositionRoutine(islands[i].transform, newPosition, 0.5f));
-        }
     }
 
     public void Reset()
@@ -83,6 +77,8 @@ public class IslandsManager : MonoBehaviour
             newPosition = islands[i].transform.position;
             newPosition.y = 0;
             StartCoroutine(Bundle.LerpToPositionRoutine(islands[i].transform, newPosition, 1f));
+
+            islands[i].GetDiamond().Reset();
         }
     }
 }

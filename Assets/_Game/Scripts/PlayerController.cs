@@ -14,6 +14,12 @@ public class PlayerController : MonoBehaviour
     bool canJump = true;
     bool grounded = true;
 
+    [SerializeField] GameObject landingParticles;
+    [SerializeField] GameObject drowningParticles;
+    [SerializeField] Transform mesh;
+
+    Animator animator;
+
     [SerializeField] float maxForwardForce;
     [SerializeField] float maxUpwardForce;
     [SerializeField] float minLandTime;
@@ -25,6 +31,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        animator = GetComponent<Animator>();
         groundDetector = GetComponent<GroundDetector>();
         rigidbody = GetComponent<Rigidbody>();
 
@@ -42,9 +49,10 @@ public class PlayerController : MonoBehaviour
             if (!grounded && groundDetector.Grounded() && timeSinceLastJump >= minLandTime)
             {
                 grounded = true;
+                landingParticles.SetActive(true);
                 OnLanding?.Invoke();
             }
-        }
+        }  
     }
 
     public void Jump(float forcePercent)
@@ -60,10 +68,13 @@ public class PlayerController : MonoBehaviour
 
             grounded = false;
 
-            StartCoroutine(
-                Bundle.LerpToRotationRoutine(transform, Quaternion.Euler(transform.rotation.eulerAngles + Vector3.up * 90f), 0.3f));
+            Quaternion newRotation = Quaternion.Euler(transform.rotation.eulerAngles + Vector3.up * 90f);
+
+            StartCoroutine(Bundle.LerpToRotationRoutine(transform, newRotation, 0.3f)); 
 
             transform.SetParent(null);
+
+            animator.Play("frog_backflip_anim");
 
             OnJump?.Invoke();
         }
@@ -93,6 +104,8 @@ public class PlayerController : MonoBehaviour
 
     public void Reset(Transform parent)
     {
+        mesh.gameObject.SetActive(true);
+
         grounded = true;
         FreezeRotation();
         transform.rotation = Quaternion.identity;
@@ -116,8 +129,14 @@ public class PlayerController : MonoBehaviour
             Die(collision.transform.position);
         } else if(collision.collider.CompareTag("Water Lily"))
         {
-            Debug.Log("Safe landing!");
+            Debug.Log("Safe landing.");
             transform.SetParent(collision.transform);
+        } else if (collision.collider.CompareTag("Water"))
+        {
+            Debug.Log("AAaaaaa, I'm drowning!");
+            mesh.gameObject.SetActive(false);
+            drowningParticles.SetActive(true);
+            Die(collision.transform.position);
         }
     }
 }

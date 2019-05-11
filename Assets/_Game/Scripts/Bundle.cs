@@ -24,6 +24,25 @@ public static class Bundle
         onRoutineEnd?.Invoke();
     }
 
+    public static IEnumerator LerpToLocalRotationRoutine(
+    Transform t, Quaternion localRotation, float routineTime,
+    Action onRoutineStart = null, Action onRoutineEnd = null
+    )
+    {
+        onRoutineStart?.Invoke();
+        Quaternion startingRotation = t.localRotation;
+        float deltaTime = 0;
+        float f = 0;
+        while (deltaTime < routineTime)
+        {
+            deltaTime += Time.deltaTime;
+            f = deltaTime / routineTime;
+            t.localRotation = Quaternion.Lerp(startingRotation, localRotation, f);
+            yield return null;
+        }
+        onRoutineEnd?.Invoke();
+    }
+
     public static IEnumerator LerpToPositionRoutine(
         Transform t, Vector3 position, float routineTime,
         Action onRoutineStart = null, Action onRoutineEnd = null, Action onEveryFrame = null)

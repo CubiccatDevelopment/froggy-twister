@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Island
   - Water Lily
+  - Diamond
+  - Water
   layers:
   - Default
   - TransparentFX
