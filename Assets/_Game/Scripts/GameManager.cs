@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public InputManager inputManager;
     public CameraPivotController cameraPivotController;
     public IslandsManager islandsManager;
+    public GameBoundsController gameBounds;
 
     private void Awake()
     {
@@ -24,7 +25,9 @@ public class GameManager : MonoBehaviour
 
         islandsManager.OnIslandMove += () =>
         {
-            cameraPivotController.SetHeight(islandsManager.GetAverageHeight());
+            float islandsAvgHeight = islandsManager.GetAverageHeight();
+            cameraPivotController.SetHeight(islandsAvgHeight);
+            gameBounds.SetHeight(islandsAvgHeight);
         };
 
         player.OnJump += cameraPivotController.RotateOnce;
@@ -39,5 +42,6 @@ public class GameManager : MonoBehaviour
         player.Reset(islandsManager.GetStartingIsland().GetWaterLily());
         cameraPivotController.Reset();
         islandsManager.Reset();
+        gameBounds.SetHeight(0);
     }
 }

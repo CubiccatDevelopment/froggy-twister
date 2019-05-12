@@ -9,6 +9,7 @@ TagManager:
   - Water Lily
   - Diamond
   - Water
+  - Game Bounds
   layers:
   - Default
   - TransparentFX

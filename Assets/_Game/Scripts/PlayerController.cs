@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour
             {
                 grounded = true;
                 landingParticles.SetActive(true);
+                animator.Play("frog_land_anim");
                 OnLanding?.Invoke();
             }
         }  
@@ -131,12 +132,21 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Safe landing.");
             transform.SetParent(collision.transform);
-        } else if (collision.collider.CompareTag("Water"))
+        } else if (collision.collider.CompareTag("Water") && !isDead)
         {
             Debug.Log("AAaaaaa, I'm drowning!");
             mesh.gameObject.SetActive(false);
             drowningParticles.SetActive(true);
             Die(collision.transform.position);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Game Bounds") && !isDead)
+        {
+            Debug.Log("Player out of game bounds.");
+            Die(other.transform.position);
         }
     }
 }

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8074741070661705682
+--- !u!1 &239210030718098340
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8074741070661705683}
-  - component: {fileID: 8074741070661705684}
+  - component: {fileID: 8523200333775811934}
+  - component: {fileID: 4119914363786045555}
   m_Layer: 0
-  m_Name: Game Manager
-  m_TagString: Untagged
+  m_Name: Game Bounds
+  m_TagString: Game Bounds
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8074741070661705683
+--- !u!4 &8523200333775811934
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8074741070661705682}
+  m_GameObject: {fileID: 239210030718098340}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,20 +31,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8074741070661705684
-MonoBehaviour:
+--- !u!65 &4119914363786045555
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8074741070661705682}
+  m_GameObject: {fileID: 239210030718098340}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9277e187cf68ad04284c4cfe2463f391, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  inputManager: {fileID: 0}
-  cameraPivotController: {fileID: 0}
-  islandsManager: {fileID: 0}
-  gameBounds: {fileID: 0}
+  serializedVersion: 2
+  m_Size: {x: 17, y: 50, z: 17}
+  m_Center: {x: 0, y: 0, z: 0}
