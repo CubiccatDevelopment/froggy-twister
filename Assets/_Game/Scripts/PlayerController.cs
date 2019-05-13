@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
 
     GroundDetector groundDetector;
 
+    Transform lastWaterLily;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -107,37 +109,63 @@ public class PlayerController : MonoBehaviour
     {
         mesh.gameObject.SetActive(true);
 
+        lastWaterLily = null;
         grounded = true;
-        FreezeRotation();
-        transform.rotation = Quaternion.identity;
-        rigidbody.velocity = Vector3.zero;
 
+        rigidbody.velocity = Vector3.zero;
+        FreezeRotation();
+
+        transform.rotation = Quaternion.identity;
         transform.SetParent(parent);
         transform.localPosition = Vector3.up * 2f;
         transform.localScale = Vector3.zero;
 
         StopAllCoroutines();
-        StartCoroutine(Bundle.LerpToLocalScale(transform, Vector3.one, 0.5f, null, () => { isDead = false; }));
+        StartCoroutine(Bundle.LerpToLocalScale(transform, Vector3.one, 0.5f));
 
         isDead = false;
     }
 
+    public void SetParent(Transform parent)
+    {
+        transform.SetParent(parent);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.CompareTag("Island") && !isDead)
+        if(!isDead)
         {
-            Debug.Log("Ouch, islands hurt!");
-            Die(collision.transform.position);
-        } else if(collision.collider.CompareTag("Water Lily"))
-        {
-            Debug.Log("Safe landing.");
-            transform.SetParent(collision.transform);
-        } else if (collision.collider.CompareTag("Water") && !isDead)
-        {
-            Debug.Log("AAaaaaa, I'm drowning!");
-            mesh.gameObject.SetActive(false);
-            drowningParticles.SetActive(true);
-            Die(collision.transform.position);
+            if (collision.collider.CompareTag("Island"))
+            {
+                Debug.Log("Ouch, islands hurt!");
+                Die(collision.transform.position);
+            }
+            else if (collision.collider.CompareTag("Water Lily"))
+            {
+                if (collision.collider.transform == lastWaterLily)
+                {
+                    Debug.Log("Same water lily.");
+                    Die(collision.transform.position);
+                }
+                else if (lastWaterLily != null)
+                {
+                    Debug.Log("Safe landing.");
+                    lastWaterLily = collision.collider.transform;
+                    transform.SetParent(collision.transform);
+                }
+                else
+                {
+                    Debug.Log("Player first landing.");
+                    lastWaterLily = collision.collider.transform;
+                }
+            }
+            else if (collision.collider.CompareTag("Water"))
+            {
+                Debug.Log("AAaaaaa, I'm drowning!");
+                mesh.gameObject.SetActive(false);
+                drowningParticles.SetActive(true);
+                Die(collision.transform.position);
+            }
         }
     }
 

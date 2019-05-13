@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public CameraPivotController cameraPivotController;
     public IslandsManager islandsManager;
     public GameBoundsController gameBounds;
+    public ScoreManager scoreManager;
 
     private void Awake()
     {
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
 
         player.OnJump += cameraPivotController.RotateOnce;
         player.OnLanding += islandsManager.SetPreviousIslandRandomPosition;
+        player.OnLanding += scoreManager.AddPoint;
 
         inputManager.OnPowerRelease += player.Jump;
         inputManager.OnReset += Reset;
@@ -43,5 +45,6 @@ public class GameManager : MonoBehaviour
         cameraPivotController.Reset();
         islandsManager.Reset();
         gameBounds.SetHeight(0);
+        scoreManager.ChangeScore(0);
     }
 }
