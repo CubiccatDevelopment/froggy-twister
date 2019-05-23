@@ -1,9 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
+    public static InputManager Instance;
+    void Singletone()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+        DontDestroyOnLoad(gameObject);
+    }
+
     public event Action OnLoadPower;
     public event Action<float> OnPowerRelease;
     public event Action OnReset;
@@ -13,27 +24,34 @@ public class InputManager : MonoBehaviour
     float currentPowerPercent = 0;
     Coroutine powerRoutine;
 
+    private void Awake()
+    {
+        Singletone();
+    }
+
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            //Debug.Log("Frog launch initialized.");
-
-            powerRoutine = StartCoroutine(PowerRoutine());
-
-            OnLoadPower?.Invoke();
-        } else if(Input.GetKeyUp(KeyCode.Space))
-        {
-            //Debug.Log("Launched frog with " + currentPowerPercent * 100 + "% of force");
-
-            if (powerRoutine != null)
-                StopCoroutine(powerRoutine);
-
-            OnPowerRelease?.Invoke(currentPowerPercent);
-        }
-
         if (Input.GetKeyDown(KeyCode.R))
-            OnReset?.Invoke();
+            InvokeReset();
+    }
+
+    public void InvokeReset()
+    {
+        OnReset?.Invoke();
+    }
+
+    public void StartPowerRoutine()
+    {
+        powerRoutine = StartCoroutine(PowerRoutine());
+        OnLoadPower?.Invoke();
+    }
+
+    public void EndPowerRoutine()
+    {
+        if (powerRoutine != null)
+            StopCoroutine(powerRoutine);
+
+        OnPowerRelease?.Invoke(currentPowerPercent);
     }
 
     IEnumerator PowerRoutine()
